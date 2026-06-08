@@ -6,11 +6,12 @@ import Register from './pages/aouth/Register'
 import Authlayout from './layouts/Authlayout/Authlayout'
 import Userlayout from './layouts/Userlayout/Userlayout'
 import './App.css'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Userlayout />}>
+      <Route path="/" element={<ProtectedRoute><Userlayout /></ProtectedRoute>}>
         <Route index element={<Home />} />
         <Route path="profile" element={<Profile />} />
       </Route>

@@ -1,8 +1,11 @@
-import React, { useState } from 'react' // 1. استيراد useState لتغير حالة القائمة
-import { Outlet, Link } from 'react-router-dom' 
+import React, { useState, useContext } from 'react' // 1. استيراد useState لتغير حالة القائمة
+import { Outlet, Link, useNavigate } from 'react-router-dom'
+import { AouthContext } from '../../context/AoutContext'
 
 export default function Userlayout() {
   const [isOpen, setIsOpen] = useState(false); 
+  const navigate = useNavigate()
+  const { token, logout } = useContext(AouthContext)
 
   return (
     <div className="min-h-screen bg-gray-50"> 
@@ -64,9 +67,13 @@ export default function Userlayout() {
 
                 <div className="flex flex-col gap-1">
                   <button
+                    onClick={() => {
+                      if (logout) logout()
+                      navigate('/login')
+                    }}
                     className="flex items-center gap-2 w-full text-left px-2 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
                   >
-                    <i className="fa-solid fa-arrow-right-from-bracket text-gray-400"></i>
+                    <i className="fa-solid fa-arrow-right-from-bracket text-gray-400"></i> 
                     Log Out
                   </button>
                 </div>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast' 
 import { useNavigate } from 'react-router-dom'
+import { AouthContext } from '../../context/AoutContext'
 import { registerSchema } from '../../Schema/Schema.register'
 
 const API_URL = "https://ecommerce.routemisr.com/api/v1/auth/signup"
@@ -15,6 +16,11 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false) 
   
   const navigate = useNavigate()
+  const { token } = useContext(AouthContext)
+
+  useEffect(() => {
+    if (token) navigate('/')
+  }, [token, navigate])
   const {
     register,
     handleSubmit,
@@ -45,7 +51,8 @@ export default function Register() {
         reset(); 
 
         setTimeout(() => {
-          navigate('/Login') 
+          // navigate to lowercase path to match routes
+          navigate('/login')
         }, 2000);
       }
 

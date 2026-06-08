@@ -19,14 +19,14 @@ export default function Authlayout() {
         
           <div className="flex items-center gap-4">
             <Link 
-              to="/Login" 
+              to="/login" 
               className="text-sm font-semibold text-gray-600 hover:text-blue-600 px-4 py-2 rounded-xl hover:bg-gray-50 transition-all"
             >
               Log In
             </Link>
 
             <Link 
-              to="/Register" 
+              to="/register" 
               className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-5 py-2.5 rounded-xl shadow-md shadow-blue-100 hover:shadow-lg transition-all"
             >
               Register

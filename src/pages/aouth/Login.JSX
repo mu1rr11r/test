@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast' 
 import { useNavigate } from 'react-router-dom'
+import { AouthContext } from '../../context/AoutContext'
 import { loginSchema } from '../../Schema/Schema.login'
 
 const API_URL = "https://ecommerce.routemisr.com/api/v1/auth/signin"
@@ -15,15 +16,19 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false) 
   
   const navigate = useNavigate()
+  const { token, setToken } = useContext(AouthContext);
+  useEffect(() => {
+    if (token) navigate('/')
+  }, [token, navigate])
   const {
-  register,
-  handleSubmit,
-  reset,
-  formState: { errors, isValid },
-} = useForm({
-  resolver: zodResolver(loginSchema),
-  mode: 'onChange',
-})
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+  })
 
 
 
@@ -42,10 +47,20 @@ export default function Login() {
         toast.success('تم تسجيل الدخول بنجاح! جاري تحويلك لصفحة لوحة التحكم...');
         setSuccessMessage('تم تسجيل الدخول بنجاح! جاري تحويلك لصفحة لوحة التحكم...');
         setApiError('');
-        reset(); 
-
+        reset();
+        const token =
+          res.data?.data?.token ||
+          res.data?.token ||
+          res.data?.data?.access_token ||
+          res.data?.access_token;
+        console.log('login response', res.data);
+        if (token) {
+          setToken(token);
+        } else {
+          console.warn('لم يتم العثور على التوكن في الرد:', res.data);
+        }
         setTimeout(() => {
-          navigate('/Home') 
+          navigate('/')
         }, 2000);
       }
 
@@ -119,6 +134,8 @@ export default function Login() {
                 {apiError}
               </div>
             )}
+
+          
           </div>
 
         </form>
